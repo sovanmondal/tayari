@@ -7,7 +7,7 @@ Tayari — From Drought Forecast to Last-Mile Action | IGAD Hackathon 2026
 
 ### Alternate titles
 - Tayari: The AI Co-pilot that Completes ICPAC's Early-Warning Stack
-- Tayari — Anticipatory Action Co-pilot (IGAD Hackathon 2026 Demo)
+- Tayari — Impact-Based Forecasting Co-pilot (IGAD Hackathon 2026 Demo)
 - Turning Early Warning into Early Action — Tayari | IGAD Hackathon 2026
 
 ---

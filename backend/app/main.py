@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 
 app = FastAPI(
-    title="Tayari — Anticipatory Action Co-pilot",
+    title="Tayari — Impact-Based Forecasting Co-pilot",
     description="Operational reasoning layer between ICPAC forecasts and last-mile action.",
     version="0.1.0",
 )

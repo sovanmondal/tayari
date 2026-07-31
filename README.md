@@ -2,7 +2,7 @@
 
 # 🌍 Tayari
 
-### The Anticipatory Action Co-pilot — turning early *warning* into early *action*
+### The Impact-Based Forecasting Co-pilot — turning early *warning* into early *action*
 
 *From ICPAC's forecast → to a life-saving decision → to the last mile.*
 

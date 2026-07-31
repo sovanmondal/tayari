@@ -1,6 +1,6 @@
 # Project Overview (≈250 words)
 
-**Tayari — the Anticipatory Action Co-pilot**
+**Tayari — the Impact-Based Forecasting Co-pilot**
 
 In the Horn of Africa, the forecast is rarely the problem. ICPAC already produces
 world-class drought forecasts, and HUSIKA already delivers alerts to the last mile. The

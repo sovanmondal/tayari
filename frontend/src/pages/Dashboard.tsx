@@ -60,7 +60,7 @@ export function Dashboard() {
           <TayariMark />
           <div>
             <h1 className="font-display text-xl font-bold tracking-tight">
-              Tayari <span className="text-sm font-medium text-ochre-400">· Anticipatory Action Co-pilot</span>
+              Tayari <span className="text-sm font-medium text-ochre-400">· Impact-Based Forecasting Co-pilot</span>
             </h1>
             <p className="text-xs text-stone-400">ICPAC forecast → decision → last-mile action · real Combined Drought Indicator</p>
           </div>

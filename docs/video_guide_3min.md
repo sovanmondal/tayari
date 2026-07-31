@@ -62,7 +62,7 @@
 ---
 
 ## ON-SCREEN TEXT OVERLAYS (optional, add in editor)
-- 0:05 — "Tayari · Anticipatory Action Co-pilot"
+- 0:05 — "Tayari · Impact-Based Forecasting Co-pilot"
 - 0:30 — "100% real ICPAC / HDX data"
 - 1:10 — "Auditable evidence — no black box"
 - 1:50 — "Local-language, low-literacy, any phone"

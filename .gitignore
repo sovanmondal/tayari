@@ -45,3 +45,8 @@ push_to_github.sh
 AGENTS.md
 *amazon*
 *.steering.md
+
+# Submission packaging artifacts
+tayari-submission/
+*.zip
+SUBMISSION_INFO.txt

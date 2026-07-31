@@ -8,7 +8,7 @@ Tip: hide the mouse cursor while recording.
 
 ## 1) intro.html  — 3–5 second opener (before the app)
 One-shot animation:
-- Logo mark pops in → **Tayari** title → "Anticipatory Action Co-pilot"
+- Logo mark pops in → **Tayari** title → "Impact-Based Forecasting Co-pilot"
 - Flow chips: **ICPAC forecast → decision → last-mile action**
 - Tagline: "Turning early warning into early action."
 
