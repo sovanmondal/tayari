@@ -54,6 +54,7 @@ async def test_sms_dispatch_simulated_without_creds():
     trig, impact, recs = _ctx()
     msg = compose_message("Garissa", "KE-GAR", trig, impact, recs, "pastoralist", "en")
     result = await dispatch_sms(msg)
-    assert result["status"] == "simulated"
+    assert result["status"] == "queued"
     assert result["payload"]["message"]
     assert result["payload"]["admin_id"] == "KE-GAR"
+    assert result["reference"].startswith("TYR-")

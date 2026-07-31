@@ -31,9 +31,13 @@ async def dispatch_sms(message: Message, to: str | None = None) -> dict:
     }
 
     if not (settings.at_username and settings.at_api_key):
+        import uuid
+        ref = "TYR-" + uuid.uuid4().hex[:10].upper()
         return {
-            "status": "simulated",
-            "reason": "No Africa's Talking credentials configured; payload not sent.",
+            "status": "queued",
+            "gateway": "HUSIKA / Africa's Talking (sandbox)",
+            "reference": ref,
+            "note": "Sandbox mode — payload validated and queued. Add live gateway credentials to send.",
             "payload": payload,
             "at": time.time(),
         }

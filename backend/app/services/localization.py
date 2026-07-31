@@ -100,17 +100,58 @@ def compose_message(
     valid_until: str | None = None,
 ) -> Message:
     top = recommendations[0] if recommendations else None
-    text = _compose_text(audience, language, admin_name, trigger, impact, top)
+    # Deterministic fallback (always valid, grounded) if the LLM is unavailable/off-contract.
+    fallback = _compose_text(audience, language, admin_name, trigger, impact, top)
 
-    # Optional grounded LLM refinement (kept within the numeric grounding contract).
-    context = {"exposed": f"{impact.total_population_exposed:,}",
-               "cdi": int(round(trigger.observed_value)),
-               "lead": top.lead_time_days if top else 0}
-    system = (
-        "You localise short early-warning SMS for low-literacy rural audiences. Keep it under "
-        "300 characters, simple, and change NO numbers. Keep the same language as the input."
+    top_actions = recommendations[:3]
+    actions_str = "; ".join(
+        f"{r.action} (within {r.lead_time_days} days)" for r in top_actions
+    ) or "follow official guidance"
+    livelihood = ", ".join(
+        f"{b.population:,} {b.livelihood}" for b in impact.by_livelihood
+    ) or "residents"
+
+    lang_name = {"en": "English", "sw": "Swahili"}.get(language, language)
+    audience_desc = {
+        "pastoralist": "a pastoralist livestock herder in a remote rural area",
+        "farmer": "a smallholder farmer",
+        "drm_officer": "a county disaster-management officer",
+    }.get(audience, "a community member")
+
+    # Numbers the LLM is allowed to use verbatim (major-number guard blocks fake populations).
+    context = {
+        "exposed": f"{impact.total_population_exposed:,}",
+        "cdi": int(round(trigger.observed_value)),
+        "leads": " ".join(str(r.lead_time_days) for r in top_actions),
+    }
+
+    if audience == "drm_officer":
+        system = (
+            f"You are ICPAC's disaster-management briefing officer. Write a concise, professional "
+            f"drought early-action alert in {lang_name} for {audience_desc}. State the situation and "
+            f"the priority actions with their lead times, drawn ONLY from the provided action list. "
+            f"3-4 sentences. Do NOT invent population figures or place names."
+        )
+    else:
+        system = (
+            f"You are ICPAC's community early-warning officer. Write a clear, practical drought "
+            f"warning in {lang_name} for {audience_desc}. Explain simply what is happening and give "
+            f"the specific, concrete actions to take — drawn ONLY from the provided action list, "
+            f"reworded into plain everyday language a low-literacy reader understands (e.g. 'sell "
+            f"weak animals at the market now', 'move your herd to the water points', 'vaccinate your "
+            f"breeding animals'). 3-5 short sentences, warm and direct. For any timeframe use only the "
+            f"day counts given. Do NOT invent population numbers or place names."
+        )
+
+    prompt = (
+        f"Location: {admin_name}. Drought level: {trigger.severity.value} "
+        f"(Combined Drought Indicator class {context['cdi']}). "
+        f"People exposed: {context['exposed']} ({livelihood}). "
+        f"Official recommended actions, in priority order: {actions_str}. "
+        f"Write the message in {lang_name} now. Start with the alert level word."
     )
-    text = grounded_complete(system, f"Simplify, same language, keep numbers:\n{text}", context, text)
+
+    text = grounded_complete(system, prompt, context, fallback, only_major=True)
 
     return Message(
         audience=audience,

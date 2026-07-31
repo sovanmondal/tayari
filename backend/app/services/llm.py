@@ -32,12 +32,25 @@ def allowed_numbers(context: dict) -> set[str]:
     return allowed
 
 
-def violates_grounding(text: str, context: dict) -> bool:
-    """True if the text introduces a number not present in the grounding context."""
+def violates_grounding(text: str, context: dict, only_major: bool = False) -> bool:
+    """True if the text introduces a number not present in the grounding context.
+
+    only_major=True checks only 'major' figures (>= 1000) — used for community messages,
+    where the critical guarantee is not fabricating population/impact numbers, while
+    natural timeframes ("within 2 weeks") are allowed.
+    """
     allowed = allowed_numbers(context)
     for tok in _NUM.findall(text):
-        if _norm(tok) not in allowed:
-            return True
+        n = _norm(tok)
+        if n in allowed:
+            continue
+        if only_major:
+            try:
+                if float(n) < 1000:
+                    continue
+            except ValueError:
+                continue
+        return True
     return False
 
 
@@ -91,16 +104,45 @@ class OpenAIProvider(LLMProvider):  # pragma: no cover - requires API key
         return resp.choices[0].message.content or ""
 
 
+class GroqProvider(LLMProvider):  # pragma: no cover - requires API key
+    """Groq via its OpenAI-compatible endpoint (fast, free-tier)."""
+
+    def complete(self, system: str, prompt: str) -> str:
+        from openai import OpenAI
+
+        # Tight timeout + no long retries: if Groq is slow, fail fast so the caller
+        # falls back to the deterministic grounded template instead of hanging the UI.
+        client = OpenAI(
+            api_key=settings.groq_api_key,
+            base_url=settings.groq_base_url,
+            timeout=12.0,
+            max_retries=1,
+        )
+        resp = client.chat.completions.create(
+            model=settings.groq_model,
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": prompt},
+            ],
+            max_tokens=600,
+            temperature=0.3,
+        )
+        return resp.choices[0].message.content or ""
+
+
 def get_provider() -> LLMProvider:
     p = settings.llm_provider.lower()
     if p == "bedrock":
         return BedrockProvider()
+    if p == "groq" and settings.groq_api_key:
+        return GroqProvider()
     if p == "openai" and settings.openai_api_key:
         return OpenAIProvider()
     return TemplateProvider()
 
 
-def grounded_complete(system: str, prompt: str, context: dict, fallback: str) -> str:
+def grounded_complete(system: str, prompt: str, context: dict, fallback: str,
+                      only_major: bool = False) -> str:
     """Run the provider, but return `fallback` if the output breaks the grounding contract."""
     provider = get_provider()
     if isinstance(provider, TemplateProvider):
@@ -109,6 +151,6 @@ def grounded_complete(system: str, prompt: str, context: dict, fallback: str) ->
         out = provider.complete(system, prompt).strip()
     except Exception:
         return fallback
-    if not out or violates_grounding(out, context):
+    if not out or violates_grounding(out, context, only_major=only_major):
         return fallback
     return out

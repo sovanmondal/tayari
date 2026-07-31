@@ -6,8 +6,31 @@ html, body, #root {
   height: 100%;
   margin: 0;
 }
+
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #0f172a;
-  color: #e2e8f0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  /* Warm savanna dusk: deep espresso base with a low ochre glow. */
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(217, 119, 66, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 0% 110%, rgba(120, 140, 90, 0.08), transparent 55%),
+    #17130f;
+  color: #ece5db;
 }
+
+h1, h2, h3, .display {
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Warm the OSM basemap so it sits in the palette instead of fighting it. */
+.maplibregl-map {
+  filter: saturate(0.82) sepia(0.12) brightness(0.94);
+}
+
+/* Custom scrollbar (warm) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #4a3f34; border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Amber range slider */
+input[type="range"] { accent-color: #d9863c; }

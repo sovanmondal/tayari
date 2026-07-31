@@ -24,3 +24,24 @@ backend/.cache/
 
 # OS
 .DS_Store
+
+# Media (never pushed per project policy) — images, video, gifs
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.mov
+*.webm
+*.webp
+Media/
+presentation/gallery/
+
+# Push helper contains a one-time token — never commit it
+push_to_github.sh
+
+# Kiro / Amazon / agent artifacts (safety)
+.kiro/
+AGENTS.md
+*amazon*
+*.steering.md

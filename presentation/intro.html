@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tayari — Intro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{ --bg:#17130f; --ink:#ece5db; --ochre:#d9863c; --gold:#e0b341; --sage:#6f9b6e; --muted:#a99a86; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    font-family:"Inter",system-ui,sans-serif; color:var(--ink); overflow:hidden;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(217,119,66,.14), transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, rgba(120,140,90,.10), transparent 55%),
+      var(--bg);
+    display:flex; align-items:center; justify-content:center; height:100vh;
+  }
+  /* slow ambient glow */
+  body::before{
+    content:""; position:fixed; inset:0;
+    background:radial-gradient(600px 400px at 50% 40%, rgba(224,179,65,.06), transparent 70%);
+    animation:breathe 6s ease-in-out infinite;
+  }
+  @keyframes breathe{ 0%,100%{opacity:.5} 50%{opacity:1} }
+
+  .stage{ text-align:center; position:relative; z-index:1; }
+
+  .mark{ opacity:0; transform:scale(.6) translateY(10px); animation:pop .9s cubic-bezier(.2,.8,.2,1) .1s forwards; }
+  @keyframes pop{ to{ opacity:1; transform:scale(1) translateY(0);} }
+  .sun{ transform-origin:center; animation:spin 22s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+
+  .title{
+    font-family:"Space Grotesk",sans-serif; font-weight:700; font-size:clamp(48px,10vw,120px);
+    letter-spacing:-.03em; margin-top:18px; line-height:1;
+    background:linear-gradient(180deg,#fff 0%, var(--gold) 120%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    opacity:0; transform:translateY(18px); animation:rise .8s ease-out .5s forwards;
+  }
+  .sub{
+    font-family:"Space Grotesk",sans-serif; font-weight:500; font-size:clamp(15px,2.4vw,24px);
+    color:var(--ochre); margin-top:10px; letter-spacing:.02em;
+    opacity:0; transform:translateY(14px); animation:rise .7s ease-out 1.1s forwards;
+  }
+  .flow{ display:flex; align-items:center; justify-content:center; gap:14px; margin-top:34px; flex-wrap:wrap; }
+  .chip{
+    font-size:clamp(12px,1.7vw,17px); color:var(--ink); padding:8px 14px; border-radius:999px;
+    border:1px solid rgba(217,119,66,.35); background:rgba(255,255,255,.03);
+    opacity:0; transform:translateY(10px);
+  }
+  .chip.f1{ animation:rise .5s ease-out 1.9s forwards; }
+  .chip.f2{ animation:rise .5s ease-out 2.4s forwards; }
+  .chip.f3{ animation:rise .5s ease-out 2.9s forwards; }
+  .arrow{ color:var(--muted); opacity:0; }
+  .arrow.a1{ animation:fade .4s ease 2.25s forwards; }
+  .arrow.a2{ animation:fade .4s ease 2.75s forwards; }
+  @keyframes rise{ to{opacity:1; transform:translateY(0);} }
+  @keyframes fade{ to{opacity:1;} }
+
+  .tag{
+    margin-top:34px; font-size:clamp(14px,2vw,20px); color:var(--muted);
+    opacity:0; animation:rise .8s ease-out 3.5s forwards;
+  }
+  .tag b{ color:var(--sage); font-weight:600; }
+
+  .replay{
+    position:fixed; bottom:16px; right:16px; z-index:5; font-family:"Inter";
+    background:rgba(255,255,255,.06); color:var(--muted); border:1px solid rgba(255,255,255,.12);
+    border-radius:8px; padding:6px 10px; font-size:12px; cursor:pointer;
+  }
+  .replay:hover{ color:var(--ink); }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="mark">
+      <svg width="96" height="96" viewBox="0 0 40 40" fill="none" aria-label="Tayari">
+        <rect width="40" height="40" rx="11" fill="#211a13"/>
+        <g class="sun">
+          <circle cx="20" cy="17" r="7" fill="#e0b341"/>
+          <g stroke="#d9863c" stroke-width="1.5" stroke-linecap="round">
+            <line x1="20" y1="3.5" x2="20" y2="6.5"/><line x1="31" y1="6" x2="28.7" y2="8.3"/>
+            <line x1="9" y1="6" x2="11.3" y2="8.3"/><line x1="34" y1="17" x2="31" y2="17"/><line x1="6" y1="17" x2="9" y2="17"/>
+          </g>
+        </g>
+        <path d="M4 28 Q12 24 20 28 T36 28" stroke="#6f9b6e" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M4 33 Q12 29 20 33 T36 33" stroke="#8a6f4e" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1 class="title">Tayari</h1>
+    <div class="sub">Anticipatory Action Co-pilot</div>
+
+    <div class="flow">
+      <span class="chip f1">ICPAC forecast</span>
+      <span class="arrow a1">→</span>
+      <span class="chip f2">decision</span>
+      <span class="arrow a2">→</span>
+      <span class="chip f3">last-mile action</span>
+    </div>
+
+    <div class="tag">Turning early warning into <b>early action</b>.</div>
+  </div>
+</body>
+</html>

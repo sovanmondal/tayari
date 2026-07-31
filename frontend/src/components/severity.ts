@@ -1,10 +1,10 @@
 import type { Severity } from "../api/client";
 
 export const SEV_COLOR: Record<Severity, string> = {
-  none: "#4ade80",
-  watch: "#facc15",
-  warning: "#fb923c",
-  alert: "#ef4444",
+  none: "#6f9b6e",
+  watch: "#e0b341",
+  warning: "#d9863c",
+  alert: "#c0442e",
 };
 
 export const SEV_LABEL: Record<Severity, string> = {

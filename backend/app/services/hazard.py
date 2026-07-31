@@ -76,6 +76,21 @@ async def latest_cdi_resource() -> dict:
     raise RuntimeError("No CDI GeoTIFF resource found on HDX")
 
 
+def _date_of(name: str) -> str:
+    return name.replace("eadw-cdi-data-", "").replace(".tif", "")
+
+
+async def list_dekads() -> list[str]:
+    """Return all available real CDI dekad dates (YYYY-MM-DD), newest first."""
+    dates: set[str] = set()
+    for ds in CDI_DATASETS:
+        pkg = await hdx_client.package(ds)
+        for r in pkg.data.get("resources", []):
+            if r.get("format") == "GeoTIFF":
+                dates.add(_date_of(r["name"]))
+    return sorted(dates, reverse=True)
+
+
 async def _download(url: str) -> Path:
     fn = RASTER_DIR / url.split("/")[-1]
     if fn.exists() and fn.stat().st_size > 0:

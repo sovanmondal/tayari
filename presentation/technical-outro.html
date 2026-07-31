@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tayari — Technical Outro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{ --bg:#17130f; --ink:#ece5db; --ochre:#d9863c; --gold:#e0b341; --sage:#6f9b6e; --clay:#c0442e; --muted:#a99a86; --panel:#241c15; --line:#4a3f34; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    font-family:"Inter",system-ui,sans-serif; color:var(--ink); overflow:hidden; height:100vh;
+    background:
+      radial-gradient(1200px 700px at 85% -10%, rgba(217,119,66,.12), transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, rgba(120,140,90,.08), transparent 55%),
+      var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4vh 5vw;
+  }
+  .kicker{ font-family:"Space Grotesk"; font-weight:600; color:var(--ochre); letter-spacing:.14em; text-transform:uppercase;
+    font-size:clamp(11px,1.5vw,15px); opacity:0; animation:fade .8s ease .2s forwards; }
+  h1{ font-family:"Space Grotesk"; font-weight:700; font-size:clamp(22px,3.6vw,40px); letter-spacing:-.02em; margin:6px 0 26px;
+    opacity:0; transform:translateY(12px); animation:rise .8s ease .5s forwards; }
+  h1 b{ color:var(--gold); }
+
+  /* ---------- Data sources -> core ---------- */
+  .row{ display:flex; align-items:center; justify-content:center; gap:26px; flex-wrap:wrap; }
+  .sources{ display:flex; flex-direction:column; gap:12px; }
+  .src{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 16px; min-width:230px;
+    opacity:0; transform:translateX(-18px); }
+  .src small{ color:var(--muted); display:block; font-size:11px; margin-top:2px; }
+  .src.s1{ animation:slideIn .6s ease 3.8s forwards; }
+  .src.s2{ animation:slideIn .6s ease 4.4s forwards; }
+  .src.s3{ animation:slideIn .6s ease 5.0s forwards; }
+  .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:8px; }
+
+  .core{ position:relative; background:linear-gradient(160deg,#2c2117,#1c1610); border:1.5px solid var(--ochre);
+    border-radius:16px; padding:20px 22px; text-align:center; box-shadow:0 0 40px rgba(217,119,66,.15);
+    opacity:0; transform:scale(.9); animation:pop .7s cubic-bezier(.2,.8,.2,1) 5.4s forwards; }
+  .core .name{ font-family:"Space Grotesk"; font-weight:700; font-size:26px; color:#fff; }
+  .core .role{ color:var(--ochre); font-size:12px; margin-top:2px; }
+  .badges{ display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
+  .badge{ font-size:11px; color:var(--ink); background:rgba(255,255,255,.05); border:1px solid var(--line);
+    border-radius:999px; padding:4px 10px; opacity:0; }
+  .badge.b1{ animation:fade .5s ease 6.2s forwards; }
+  .badge.b2{ animation:fade .5s ease 6.6s forwards; }
+  .badge.b3{ animation:fade .5s ease 7.0s forwards; }
+  .feed{ color:var(--sage); font-size:22px; opacity:0; animation:fade .5s ease 5.2s forwards; }
+
+  /* ---------- Pipeline ---------- */
+  .pipeline{ display:flex; align-items:center; gap:10px; margin-top:30px; flex-wrap:wrap; justify-content:center; }
+  .stage{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:13px;
+    font-family:"Space Grotesk"; font-weight:600; opacity:0; transform:translateY(10px); }
+  .stage .n{ display:block; font-size:10px; color:var(--muted); font-family:"Inter"; font-weight:400; }
+  .sep{ color:var(--muted); opacity:0; }
+  .p1{animation:rise .4s ease 14.2s forwards}.p2{animation:rise .4s ease 14.8s forwards}
+  .p3{animation:rise .4s ease 15.4s forwards}.p4{animation:rise .4s ease 16.0s forwards}
+  .p5{animation:rise .4s ease 16.6s forwards}.p6{animation:rise .4s ease 17.2s forwards}
+  .s-a{animation:fade .3s ease 14.6s forwards}.s-b{animation:fade .3s ease 15.2s forwards}
+  .s-c{animation:fade .3s ease 15.8s forwards}.s-d{animation:fade .3s ease 16.4s forwards}
+  .s-e{animation:fade .3s ease 17.0s forwards}
+
+  /* ---------- Scalability ---------- */
+  .scale{ margin-top:28px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; opacity:0;
+    animation:fade .8s ease 20.5s forwards; }
+  .schip{ border:1px dashed rgba(217,119,66,.4); border-radius:999px; padding:6px 14px; font-size:13px; color:var(--ink); }
+  .schip b{ color:var(--gold); }
+
+  /* ---------- Closing ---------- */
+  .closing{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center;
+    background:radial-gradient(700px 400px at 50% 50%, rgba(23,19,15,.75), var(--bg)); opacity:0; }
+  .closing.show{ animation:fade 1s ease 27s forwards; }
+  .closing .big{ font-family:"Space Grotesk"; font-weight:700; font-size:clamp(24px,4vw,46px); letter-spacing:-.02em; }
+  .closing .big i{ font-style:normal; color:var(--gold); }
+  .closing .small{ color:var(--muted); margin-top:14px; font-size:clamp(13px,1.8vw,18px); }
+
+  /* progress + replay */
+  .bar{ position:fixed; left:0; bottom:0; height:3px; width:0; background:linear-gradient(90deg,var(--ochre),var(--gold));
+    animation:grow 32s linear .2s forwards; }
+  @keyframes grow{ to{ width:100%; } }
+  .replay{ position:fixed; bottom:12px; right:14px; z-index:9; font-family:"Inter"; background:rgba(255,255,255,.06);
+    color:var(--muted); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:6px 10px; font-size:12px; cursor:pointer; }
+
+  @keyframes fade{ to{opacity:1} }
+  @keyframes rise{ to{opacity:1; transform:translateY(0)} }
+  @keyframes slideIn{ to{opacity:1; transform:translateX(0)} }
+  @keyframes pop{ to{opacity:1; transform:scale(1)} }
+</style>
+</head>
+<body>
+  <div class="kicker">Built for real deployment</div>
+  <h1>Real data. Real stack. <b>One pipeline.</b></h1>
+
+  <div class="row">
+    <div class="sources">
+      <div class="src s1"><span class="dot" style="background:#d9863c"></span><b>ICPAC Drought Watch</b><small>Combined Drought Indicator (live)</small></div>
+      <div class="src s2"><span class="dot" style="background:#e0b341"></span><b>Humanitarian Data Exchange</b><small>exposure &amp; impact datasets</small></div>
+      <div class="src s3"><span class="dot" style="background:#6f9b6e"></span><b>National Census</b><small>population by livelihood</small></div>
+    </div>
+
+    <div class="feed">⟶</div>
+
+    <div class="core">
+      <div class="name">TAYARI</div>
+      <div class="role">decision &amp; reasoning layer</div>
+      <div class="badges">
+        <span class="badge b1">same stack as ICPAC</span>
+        <span class="badge b2">29 automated tests</span>
+        <span class="badge b3">one command to run</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pipeline">
+    <div class="stage p1">Ingest<span class="n">real APIs</span></div><span class="sep s-a">→</span>
+    <div class="stage p2">Trigger<span class="n">thresholds</span></div><span class="sep s-b">→</span>
+    <div class="stage p3">Impact<span class="n">exposure</span></div><span class="sep s-c">→</span>
+    <div class="stage p4">Reason<span class="n">evidence + AI</span></div><span class="sep s-d">→</span>
+    <div class="stage p5">Localize<span class="n">language</span></div><span class="sep s-e">→</span>
+    <div class="stage p6">Dispatch<span class="n">HUSIKA</span></div>
+  </div>
+
+  <div class="scale">
+    <span class="schip">any hazard — <b>drought</b> · floods · disease</span>
+    <span class="schip">any <b>district</b></span>
+    <span class="schip">any <b>language</b></span>
+  </div>
+
+  <div class="closing show">
+    <div>
+      <div class="big">From forecast, to decision, to <i>action</i>.</div>
+      <div class="small">For every community that's been left waiting.</div>
+    </div>
+  </div>
+
+  <div class="bar"></div>
+</body>
+</html>

@@ -17,7 +17,10 @@ from app.domain.trigger_engine import class_info, evaluate
 from app.services.hazard import county_hazard_signals
 from app.services.narrative import compose_ibf_narrative
 
+import asyncio
+
 _CACHE: dict[str, dict] = {}
+_LOCKS: dict[str, asyncio.Lock] = {}
 
 
 def _census_prov() -> Provenance:
@@ -25,9 +28,21 @@ def _census_prov() -> Provenance:
 
 
 async def _compute(as_of: str) -> dict:
-    """Compute the full IBF bundle for all counties for a given dekad. Cached."""
+    """Compute the full IBF bundle for all counties for a given dekad. Cached.
+
+    A per-dekad lock ensures concurrent requests for the same dekad share one raster
+    download instead of racing (fixes slow/stuck loads when several panels query at once).
+    """
     if as_of in _CACHE:
         return _CACHE[as_of]
+    lock = _LOCKS.setdefault(as_of, asyncio.Lock())
+    async with lock:
+        if as_of in _CACHE:  # another request populated it while we waited
+            return _CACHE[as_of]
+        return await _compute_uncached(as_of)
+
+
+async def _compute_uncached(as_of: str) -> dict:
 
     signals, hazard_prov = await county_hazard_signals(COUNTIES, as_of)
     bundle: dict[str, dict] = {}
@@ -44,7 +59,6 @@ async def _compute(as_of: str) -> dict:
         # attach evidence chain to the top recommendation
         if recs:
             recs[0].evidence = chain
-        narrative = compose_ibf_narrative(c["name"], trig, impact, recs)
         bundle[c["id"]] = {
             "admin": admin,
             "county": c,
@@ -53,7 +67,6 @@ async def _compute(as_of: str) -> dict:
             "impact": impact,
             "recommendations": recs,
             "evidence": chain,
-            "narrative": narrative,
             "hazard_provenance": hazard_prov,
         }
     _CACHE[as_of] = bundle
@@ -83,6 +96,10 @@ async def get_ibf(admin_id: str, as_of: str | None = None) -> dict | None:
     if county_by_id(admin_id) is None:
         return None
     b = (await _compute(as_of))[admin_id]
+    if "narrative" not in b:
+        b["narrative"] = compose_ibf_narrative(
+            b["county"]["name"], b["trigger"], b["impact"], b["recommendations"]
+        )
     return {
         "admin": b["admin"].model_dump(),
         "as_of": b["signal"].valid_from,

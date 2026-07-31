@@ -4,8 +4,23 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
 
 from app.services import ibf_service
+from app.services.hazard import list_dekads
+from app.services.briefing import regional_briefing
 
 router = APIRouter(tags=["ibf"])
+
+
+@router.get("/briefing")
+async def briefing(as_of: str | None = Query(default=None)):
+    """AI-authored regional situation briefing (real LLM when configured)."""
+    return await regional_briefing(as_of)
+
+
+@router.get("/dekads")
+async def dekads():
+    """List all real available CDI dekad dates (newest first)."""
+    d = await list_dekads()
+    return {"dekads": d, "latest": d[0] if d else None}
 
 
 @router.get("/districts")

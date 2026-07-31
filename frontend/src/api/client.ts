@@ -55,6 +55,21 @@ export interface Message {
   voice_script: string;
 }
 
+export interface Briefing {
+  stats: {
+    as_of: string;
+    counties_total: number;
+    counties_triggered: number;
+    total_exposed: number;
+    worst_county: string | null;
+    worst_severity: string;
+    top_action: string;
+    triggered_names: string[];
+  };
+  text: string;
+  llm: string;
+}
+
 async function get<T>(path: string): Promise<T> {
   const r = await fetch(`${API_BASE}${path}`);
   if (!r.ok) throw new Error(`${r.status} ${path}`);
@@ -70,13 +85,18 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   return r.json();
 }
 
+const q = (asOf?: string) => (asOf ? `?as_of=${encodeURIComponent(asOf)}` : "");
+
 export const api = {
   base: API_BASE,
-  districts: () => get<District[]>("/districts"),
-  ibf: (id: string) => get<Ibf>(`/ibf/${id}`),
-  recommendations: (id: string) => get<Recommendation[]>(`/recommendations/${id}`),
-  message: (body: { admin_id: string; audience: string; language: string; channel: string }) =>
+  dekads: () => get<{ dekads: string[]; latest: string | null }>("/dekads"),
+  briefing: (asOf?: string) => get<Briefing>(`/briefing${q(asOf)}`),
+  districts: (asOf?: string) => get<District[]>(`/districts${q(asOf)}`),
+  ibf: (id: string, asOf?: string) => get<Ibf>(`/ibf/${id}${q(asOf)}`),
+  recommendations: (id: string, asOf?: string) =>
+    get<Recommendation[]>(`/recommendations/${id}${q(asOf)}`),
+  message: (body: { admin_id: string; audience: string; language: string; channel: string; as_of?: string }) =>
     post<Message>("/messages", body),
-  dispatch: (body: { admin_id: string; audience: string; language: string; channel: string }) =>
-    post<{ message: Message; dispatch: { status: string; provider_id?: string } }>("/dispatch", body),
+  dispatch: (body: { admin_id: string; audience: string; language: string; channel: string; as_of?: string }) =>
+    post<{ message: Message; dispatch: { status: string; gateway?: string; reference?: string; provider_id?: string } }>("/dispatch", body),
 };

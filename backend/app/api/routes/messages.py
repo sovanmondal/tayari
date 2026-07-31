@@ -33,16 +33,11 @@ async def _build_message(req: MessageRequest):
     county = county_by_id(req.admin_id)
     if county is None:
         raise HTTPException(status_code=404, detail=f"Unknown admin unit '{req.admin_id}'")
-    signals, _ = await county_hazard_signals([county], req.as_of)
-    admin = AdminUnit(id=county["id"], name=county["name"], country=county["country"])
-    trig = evaluate(signals[county["id"]])
-    impact = estimate_impact(admin, county["population"], county["livelihood"],
-                             triggered=trig.triggered,
-                             sources=[Provenance(source="KNBS 2019 Census",
-                                                 url="https://www.knbs.or.ke/", retrieved_at=0.0)])
-    recs = recommend(trig, impact)
-    return compose_message(county["name"], county["id"], trig, impact, recs,
-                           req.audience, req.language, req.channel)
+    # Reuse the cached IBF bundle (avoids re-downloading/sampling the CDI raster).
+    bundle = await ibf_service._compute(req.as_of or None)
+    b = bundle[req.admin_id]
+    return compose_message(county["name"], county["id"], b["trigger"], b["impact"],
+                           b["recommendations"], req.audience, req.language, req.channel)
 
 
 @router.post("/messages")
