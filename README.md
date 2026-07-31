@@ -9,11 +9,17 @@
 `FastAPI` · `PostGIS` · `geopandas` · `React` · `MapLibre` · `Groq (Llama-3.3)` · `Docker`
 **100% real open data · 29 automated tests · one-command deploy**
 
-### 🎥 Watch the demo (3 min)
+### 🎥 Watch the demo
+
+<!-- INLINE VIDEO: on github.com, click "Edit" (pencil) on this README, then DRAG
+     presentation/tayari-demo.mp4 into the editor right below this line. GitHub uploads it
+     and inserts a player link like https://github.com/user-attachments/assets/... — commit that. -->
+
+_(▶️ inline demo video — see below)_
 
 [![Tayari — demo video](https://img.youtube.com/vi/wGpn9EZxptI/maxresdefault.jpg)](https://youtu.be/wGpn9EZxptI)
 
-▶️ **https://youtu.be/wGpn9EZxptI**
+Also on YouTube: **https://youtu.be/wGpn9EZxptI**
 
 </div>
 
