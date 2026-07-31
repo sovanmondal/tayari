@@ -1,0 +1,81 @@
+# Drought Anticipatory Action playbook (Horn of Africa / ASAL pastoral systems).
+#
+# Actions and phasing follow established anticipatory-action protocols for drought:
+#   - Kenya NDMA drought phase classification & contingency planning (Normal / Alert /
+#     Alarm / Emergency) and the "Ending Drought Emergencies" (EDE) framework.
+#   - FAO Anticipatory Action for drought (commercial destocking, animal feed/water,
+#     livestock treatment) and IFRC / WFP drought AA protocols (cash, WASH).
+#   - IGAD/ICPAC IBF thresholds-triggers early-action logic.
+#
+# Each action carries lead_time_days (time needed to implement before impact),
+# cost_band (relative), actor (responsible institution), window (implementation window),
+# and priority (higher = ranked first for that phase).
+
+currency_note: "Cost bands are relative planning categories, not costed figures."
+
+actions_by_severity:
+  warning:   # CDI Warning — soil-moisture deficit; act EARLY, before livestock condition drops
+    - action: "Commercial destocking support (subsidised offtake before body condition drops)"
+      lead_time_days: 21
+      cost_band: "medium"
+      actor: "County Government / FAO / Kenya Livestock Marketing Council"
+      window: "3-6 weeks before peak stress"
+      priority: 90
+    - action: "Pre-position animal feed and open strategic water points"
+      lead_time_days: 14
+      cost_band: "medium"
+      actor: "County Dept. of Livestock / NDMA"
+      window: "2-4 weeks"
+      priority: 85
+    - action: "Anticipatory cash transfer to at-risk pastoral households (HSNP scale-up)"
+      lead_time_days: 10
+      cost_band: "high"
+      actor: "NDMA / Hunger Safety Net Programme / WFP"
+      window: "1-3 weeks"
+      priority: 80
+    - action: "Community early-warning advisories via HUSIKA (SMS / radio, local language)"
+      lead_time_days: 2
+      cost_band: "low"
+      actor: "ICPAC HUSIKA / County DRM"
+      window: "immediate"
+      priority: 70
+
+  alert:     # CDI Alert — vegetation stress confirmed; scale up, protect core herd & lives
+    - action: "Emergency water trucking to strategic settlements and schools"
+      lead_time_days: 7
+      cost_band: "high"
+      actor: "County Government / WASH cluster"
+      window: "immediate - 1 week"
+      priority: 95
+    - action: "Accelerated livestock offtake / slaughter destocking to salvage value"
+      lead_time_days: 10
+      cost_band: "medium"
+      actor: "FAO / County Dept. of Livestock"
+      window: "1-2 weeks"
+      priority: 92
+    - action: "Livestock supplementary feeding and emergency vaccination/treatment for core breeding herd"
+      lead_time_days: 7
+      cost_band: "medium"
+      actor: "FAO / County Veterinary Services"
+      window: "immediate - 2 weeks"
+      priority: 90
+    - action: "Scale up anticipatory cash + supplementary nutrition for children under 5 and PLW"
+      lead_time_days: 7
+      cost_band: "high"
+      actor: "WFP / UNICEF / NDMA"
+      window: "immediate - 2 weeks"
+      priority: 88
+    - action: "Activate community advisories + evacuation-of-livestock routes via HUSIKA"
+      lead_time_days: 2
+      cost_band: "low"
+      actor: "ICPAC HUSIKA / County DRM"
+      window: "immediate"
+      priority: 75
+
+  watch:     # CDI Watch — precipitation deficit; monitor & prepare (below trigger by default)
+    - action: "Intensify monitoring and pre-alert contingency stocks"
+      lead_time_days: 30
+      cost_band: "low"
+      actor: "NDMA / County DRM"
+      window: "preparatory"
+      priority: 50

@@ -1,0 +1,39 @@
+# Drought thresholds — Combined Drought Indicator (CDI), East Africa Drought Watch.
+#
+# The CDI GeoTIFFs on HDX (eadw-cdi-data-*.tif) store DISCRETE CLASS values 0-9
+# (verified: EPSG:4326, nodata=NaN, 10 unique integer classes).
+#
+# Classification follows the Copernicus EDO Combined Drought Indicator, which models
+# drought as a cascade: precipitation deficit (WATCH) -> soil-moisture deficit (WARNING)
+# -> vegetation stress (ALERT), plus recovery phases.
+# Ref: Cammalleri et al. (2021), "A revision of the CDI used in the EDO", NHESS 21, 481.
+#      Copernicus EDO CDI factsheet (v3/v4).
+#
+# Pixel-value -> class -> severity mapping. Values 0-6 follow the documented EDO legend.
+# Values 7-9 are EADW-extended persistent-drought classes; mapped conservatively to ALERT
+# and FLAGGED as an assumption pending the official East Africa Drought Watch legend.
+
+indicator: CDI
+unit: class
+
+class_legend:
+  0: { name: "No drought",                        severity: none }
+  1: { name: "Watch",                             severity: watch }
+  2: { name: "Warning",                           severity: warning }
+  3: { name: "Alert",                             severity: alert }
+  4: { name: "Temporary soil-moisture recovery",  severity: warning }
+  5: { name: "Temporary vegetation recovery",     severity: watch }
+  6: { name: "Recovery",                          severity: none }
+  7: { name: "Persistent drought (EADW ext.)",    severity: alert,   assumed: true }
+  8: { name: "Persistent drought (EADW ext.)",    severity: alert,   assumed: true }
+  9: { name: "Persistent drought (EADW ext.)",    severity: alert,   assumed: true }
+
+# Severity ranks (for comparison).
+severity_rank:
+  none: 0
+  watch: 1
+  warning: 2
+  alert: 3
+
+# Anticipatory action triggers at Warning (rank >= 2): act before impacts fully materialise.
+trigger_severity: warning
