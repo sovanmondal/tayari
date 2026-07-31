@@ -3,6 +3,8 @@
 ## TITLE (recommended)
 Tayari — From Drought Forecast to Last-Mile Action | IGAD Hackathon 2026
 
+**Live video:** https://youtu.be/wGpn9EZxptI
+
 ### Alternate titles
 - Tayari: The AI Co-pilot that Completes ICPAC's Early-Warning Stack
 - Tayari — Anticipatory Action Co-pilot (IGAD Hackathon 2026 Demo)
